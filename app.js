@@ -1,11 +1,13 @@
 //jshint esversion:6
+require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
 const { userSchema } = require("./models/model");
+const { EWOULDBLOCK } = require("constants");
 const schema = require(__dirname + "/models/model.js")
-const dbUrl = "mongodb://localhost:27017/userDB";
+const dbUrl = process.env.DB_URL;
 const app = express();
 
 app.use(express.static("public"));
