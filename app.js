@@ -17,7 +17,7 @@ app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(session({
-    secret:"test",
+    secret:process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false 
 }))
@@ -29,8 +29,10 @@ mongoose.connect(process.env.DB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
+
 mongoose.set("useCreateIndex", true)
 const User = new mongoose.model("User", schema.userSchema);
+
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
