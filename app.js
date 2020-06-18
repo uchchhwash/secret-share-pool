@@ -53,6 +53,7 @@ app.post("/login", function(req, res) {
         } else {
             if (foundUser) {
                 if (foundUser.password === password) {
+                    console.log("login successfull");
                     res.render("secrets");
                 }
             }
