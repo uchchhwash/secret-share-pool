@@ -14,3 +14,11 @@ body {
   color: #fff;
   background-color: #000;
 }
+.btn-google{
+  background-color:#DB4437; 
+
+}
+.btn-google-text{
+  color:white;
+  font-size: 1.4rem;
+}
