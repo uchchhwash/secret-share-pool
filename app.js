@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
+const { userSchema } = require("./models/model");
 const schema = require(__dirname + "/models/model.js")
 const dbUrl = "mongodb://localhost:27017/userDB";
 const app = express();
@@ -40,6 +41,24 @@ app.post("/register", function(req, res) {
             console.log(err);
         }
     });
+})
+
+app.post("/login", function(req, res) {
+    const username = req.body.username;
+    const password = req.body.password;
+
+    User.findOne({ email: username }, function(err, foundUser) {
+        if (err) {
+            console.log(err);
+        } else {
+            if (foundUser) {
+                if (foundUser.password === password) {
+                    res.render("secrets");
+                }
+            }
+        }
+    })
+
 })
 
 app.listen(3000, function() {
