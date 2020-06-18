@@ -4,14 +4,14 @@ const passportLocalMongoose = require("passport-local-mongoose");
 var findOrCreate = require('mongoose-findorcreate')
 
 const secretSchema = new mongoose.Schema({
+    userId: String,
     secrets: String,
-    created_on: Date
+    created_on: Date,
 })
 const userSchema = new mongoose.Schema({
     email: String,
     password: String,
     googleId: String,
-    secrets: [secretSchema]
 })
 
 //used previously for mongoose-encryption

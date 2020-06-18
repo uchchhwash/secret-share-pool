@@ -133,21 +133,21 @@ app.get("/submit", function (req, res) {
 app.post("/submit", function (req, res) {
     const submittedSecret = req.body.secret;
     User.findOne({ _id: req.user.id }, function (err, foundList) {
-        console.log(foundList)
         if (!err) {
             const newSecret = new Secret({
+                userId: foundList._id,
                 secrets: submittedSecret,
                 created_on: Date.now()
             })
-            console.log(newSecret)
-            foundList.secrets.push(newSecret);
-            foundList.save();
+            newSecret.save();
             res.redirect("/secrets");
         }
         else {
-            console.log(err);
+            console.log("secret entry failed");
+            res.redirect("/secrets");
         }
     })
+
 })
 app.get("/logout", function (req, res) {
     req.logout();
@@ -162,3 +162,25 @@ app.listen(3000, function () {
 // bcrypt.hash(req.body.password, saltRounds, function (err, hash) {})
 //bcrypt compare function
 // bcrypt.compare(password, foundUser.password, function(err, result){})
+
+
+// app.post("/submit", function (req, res) {
+//     const submittedSecret = req.body.secret;
+//     User.findOne({ _id: req.user.id }, function (err, foundList) {
+//         console.log(foundList)
+//         if (!err) {
+//             const newSecret = new Secret({
+//                 secrets: submittedSecret,
+//                 created_on: Date.now()
+//             })
+//             console.log(newSecret)
+//             foundList.secrets.push(newSecret);
+//             foundList.save();
+//             res.redirect("/secrets");
+//         }
+//         else {
+//             console.log(err);
+//             res.redirect("/secrets");
+//         }
+//     })
+// })
