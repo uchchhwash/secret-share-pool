@@ -52,7 +52,7 @@ passport.deserializeUser(function (id, done) {
 passport.use(new GoogleStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/auth/google/secrets",
+    callbackURL: process.env.CALLBACK_URL + "/auth/google/secrets",
     userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
 },
     function (accessToken, refreshToken, profile, cb) {
@@ -195,7 +195,7 @@ if (port == null || port == "") {
     port = 3000;
 }
 app.listen(port, function() {
-    console.log("server started on : http://localhost:3000");
+    console.log("server started on : http://localhost:" + port);
 })
 //bcrypy hash function
 // bcrypt.hash(req.body.password, saltRounds, function (err, hash) {})
