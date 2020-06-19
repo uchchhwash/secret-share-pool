@@ -84,10 +84,17 @@ app.get("/register", function (req, res) {
 
 app.get("/secrets", function (req, res) {
     if (req.isAuthenticated()) {
-        res.render("secrets");
+        console.log( "i am inside")
+        Secret.find({ userId: req.user.id }, function (err, foundSecrets) {
+            if (!err) {
+                res.render("secrets", { usersWithSecrets: foundSecrets });
+            } else {
+                console.log(err);
+            }
+        });
     }
     else {
-        res.redirect("/login");
+        res.redirect("/secrets");
     }
 })
 
