@@ -48,6 +48,7 @@ passport.deserializeUser(function (id, done) {
         done(err, user);
     });
 });
+
 passport.use(new GoogleStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
@@ -84,8 +85,7 @@ app.get("/register", function (req, res) {
 
 app.get("/secrets", function (req, res) {
     if (req.isAuthenticated()) {
-        console.log( "i am inside")
-        Secret.find({ userId: req.user.id }, function (err, foundSecrets) {
+        Secret.find({}, function (err, foundSecrets) {
             if (!err) {
                 res.render("secrets", { usersWithSecrets: foundSecrets });
             } else {
@@ -95,6 +95,33 @@ app.get("/secrets", function (req, res) {
     }
     else {
         res.redirect("/secrets");
+    }
+})
+
+app.get("/mySecrets", function (req, res) {
+    if (req.isAuthenticated()) {
+        Secret.find({ userId: req.user.id }, function (err, foundSecrets) {
+            if (!err) {
+                res.render("mysecrets", { mySecrets: foundSecrets });
+            } else {
+                console.log(err);
+            }
+        });
+    }
+    else {
+        res.redirect("/secrets");
+    }
+})
+
+app.get("/secret-delete/:secretId",function(req, res){
+    if (req.isAuthenticated()) {
+        Secret.findOneAndDelete({ _id: req.params.secretId }, function (err, foundSecrets) {
+            if (!err) {
+                res.redirect("/mySecrets");
+            } else {
+                console.log(err);
+            }
+        });
     }
 })
 
@@ -137,6 +164,7 @@ app.get("/submit", function (req, res) {
         res.redirect("/login");
     }
 })
+
 app.post("/submit", function (req, res) {
     const submittedSecret = req.body.secret;
     User.findOne({ _id: req.user.id }, function (err, foundList) {
@@ -156,6 +184,7 @@ app.post("/submit", function (req, res) {
     })
 
 })
+
 app.get("/logout", function (req, res) {
     req.logout();
     res.redirect("/");
